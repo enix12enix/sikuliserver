@@ -16,7 +16,7 @@ Download the project and go to sikuliserver directory, type 'ant all' on command
 
 java -Dbasedir=yourSikuliScriptHomeDirectory -jar sikuli-server.jar
 
-2) invoke sikuli script remotely:
+2) client:
 
 you can directly invoke sikuli script on remote desktop by browser.
 
@@ -34,6 +34,6 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         SikuliRemoteClient client = new SikuliRemoteClient("localhost", "9000");
-		SikuliScript result = client.excute("\script.sikuli");
+	SikuliScript result = client.excute("\script.sikuli");
     }
 }
