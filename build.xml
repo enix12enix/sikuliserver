@@ -1,0 +1,113 @@
+<project name="sikuliserver" basedir=".">
+	
+	<property name="java.src.dir" location="${basedir}/java/src"/>
+	<property name="test.src.dir" location="${basedir}/test/src"/>
+	<property name="client.src.dir" location="${basedir}/client/src"/>
+	<property name="lib.dir" location="${basedir}/lib"/>
+	<property name="testlib.dir" location="${basedir}/test_lib"/>
+	<property name="work.dir" location="${basedir}/work"/>
+	<property name="work.java.dir" location="${work.dir}/java"/>
+	<property name="work.test.dir" location="${work.dir}/test"/>
+	<property name="work.client.dir" location="${work.dir}/client"/>
+	<property name="sikuliserver.jar" location="${work.dir}/sikuli-server.jar"/>
+	<property name="client.jar" location="${work.dir}/sikuli-client.jar"/>
+	<property name="test.jar" location="${work.dir}/test.jar"/>
+
+	<property name="test.report.dir" location="${work.dir}/testreport"/>
+
+	
+    <target name="init">
+    	<mkdir dir="${work.java.dir}"/>
+    	<mkdir dir="${work.test.dir}"/>
+    	<mkdir dir="${work.client.dir}"/>
+    	<mkdir dir="${test.report.dir}"/>
+    	
+    	<path id="main.classpath">
+    	    <fileset dir="${lib.dir}">
+    		    <include name="**/*.jar"/>
+    		</fileset>
+    	</path>
+    	
+    	<path id="client.classpath">
+    	    <fileset dir="${lib.dir}">
+    	        <include name="**/*.jar"/>
+    	    </fileset>
+    	    <pathelement path="${work.java.dir}"/>
+    	</path>
+    	
+    	<path id="test.classpath">
+    	    <fileset dir="${testlib.dir}">
+    		    <include name="**/*.jar"/>
+    		</fileset>
+    		<fileset dir="${lib.dir}">
+    		    <include name="**/*.jar"/>
+    		</fileset>
+    		<pathelement path="${work.java.dir}"/>
+    		<pathelement path="${work.client.dir}"/>
+    	</path>
+    	
+    	
+    </target>
+	
+	<target name="clean">
+		<delete dir="${work.dir}"/>
+	</target>
+	
+	<target name="main.compile" depends="init">
+	    <javac srcdir="${java.src.dir}" destdir="${work.java.dir}" includes="**/*.java" >
+	    	<classpath refid="main.classpath"/>
+	    </javac>
+	</target>
+	
+	<target name="test.compile" depends="client.compile">
+		<javac srcdir="${test.src.dir}" destdir="${work.test.dir}" includes="**/*.java" >
+			<classpath refid="test.classpath"/>
+	    </javac>
+	</target>
+
+	<target name="client.compile" depends="main.compile">
+		<javac srcdir="${client.src.dir}" destdir="${work.client.dir}" includes="**/*.java" >
+		    <classpath refid="client.classpath"/>
+	    </javac>
+	</target>
+	
+	<target name="main.jar" depends="main.compile">
+		<jar destfile="${sikuliserver.jar}" basedir="${work.java.dir}">
+			<restrict>
+			    <archives>
+			        <zips>
+			            <fileset dir="${lib.dir}" includes="**/*.jar"/>
+			        </zips>
+			    </archives>
+			</restrict>
+
+			<manifest>
+			    <attribute name="Main-Class" value="com.pogo.sikuli.server.SikuliServer"/>
+			</manifest>
+		</jar>
+	</target>
+	
+	<target name="client.jar" depends="client.compile">
+	    <jar destfile="${client.jar}" basedir="${work.client.dir}" />
+	</target>
+	
+	<target name="test" depends="test.compile">
+		<junit printsummary="yes" haltonfailure="yes">
+		    <classpath>
+		    	<path refid="main.classpath"/>
+		    	<path refid="test.classpath"/>
+		    	<pathelement path="${work.test.dir}"/>
+		    	<pathelement path="${work.client.dir}"/>
+		    </classpath>
+			
+			<batchtest fork="yes" todir="${test.report.dir}">
+			    <fileset dir="${test.src.dir}">
+			        <include name="**/*Test*.java"/>
+			        <exclude name="**/AllTests.java"/>
+			    </fileset>
+			</batchtest>
+		</junit>
+	</target>
+
+	<target name="all" depends="clean, main.jar, client.jar" />
+</project>
