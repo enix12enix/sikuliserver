@@ -1,0 +1,39 @@
+Sikuli server is developed for invoking sikuli script on remote desktop.
+
+Note: it just support *.sikuli currently.
+
+*******************************************************************************************
+
+To generate sikuli-server.jar and sikuli-client.jar:
+
+You must install ant1.8 on your box first.
+
+Download the project and go to sikuliserver directory, type 'ant all' on command line.
+
+*******************************************************************************************
+
+1) run sikuli server:
+
+java -Dbasedir=yourSikuliScriptHomeDirectory -jar sikuli-server.jar
+
+2) invoke sikuli script remotely:
+
+you can directly invoke sikuli script on remote desktop by browser.
+
+the url is "http://server:9000/test.do/script=/yourscript".
+
+In addition, you can create client to call sikuli script remotely with ruby, python, java.
+
+The java client(sikuli-client.jar) is created already.
+
+Usage:
+
+import org.sikuli.SikuliRemoteClient;
+
+public class Client {
+
+    public static void main(String[] args) throws Exception {
+        SikuliRemoteClient client = new SikuliRemoteClient("localhost", "9000");
+		SikuliScript result = client.excute("\script.sikuli");
+    }
+}
