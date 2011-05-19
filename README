@@ -20,7 +20,7 @@ java -Dbasedir=yourSikuliScriptHomeDirectory -jar sikuli-server.jar
 
 you can directly invoke sikuli script on remote desktop by browser.
 
-the url is "http://server:9000/test.do/script=/yourscript".
+the url is http://server:9000/test.do/script=/yourscript
 
 In addition, you can create client to call sikuli script remotely with ruby, python, java.
 
