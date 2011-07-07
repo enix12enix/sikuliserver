@@ -1,4 +1,7 @@
-Sikuli server is developed for invoking sikuli script on remote desktop.
+Sikuli server is standalone and developed for invoking sikuli script on remote desktop.
+
+It uses jetty 6.1.26 as embeded web server and sikuli-script.jar is taken from its
+bundled lib directory. The sikuli version is Sikuli-X-1.0rc2.
 
 Note: it just support *.sikuli currently.
 
