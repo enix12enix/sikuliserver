@@ -82,7 +82,7 @@
 			</restrict>
 
 			<manifest>
-			    <attribute name="Main-Class" value="com.pogo.sikuli.server.SikuliServer"/>
+			    <attribute name="Main-Class" value="org.sikuli.server.SikuliServer"/>
 			</manifest>
 		</jar>
 	</target>
